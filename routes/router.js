@@ -68,6 +68,19 @@ router.post('/authenticate', async (req, res) => {
 })
 
 
+// router.post('/resetpassword', async (req, res) => {
+//     const { email } = req.body;
+//     const user = await User.findOne({ email });
+//     if(!user){
+//         return res.status(404).json({ message: 'User Not Found' });
+//     }
+
+//     const token=Math.random().toString(36).slice(-8);
+//     user.restPasswordToken=token;
+//     user.restPasswordExpire=Date.now()+360000;
+//     await user.save();
+// })
+
 
 router.get('/auth',verifyToken , (req, res) => {
    res.json({message:`Welcome,${req.user.email}! This is protected data`});
