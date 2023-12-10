@@ -1,34 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Movie = require('../modal/movieschema');
 const User = require('../modal/user');
 const generationToken = require('../modal/utils/index');
 const bcrypt = require('bcryptjs');
 const verifyToken = require('../middleware');
-router.post('/movie', async (req, res) => {
-    const movies = new Movie({
-        titles: req.body.titles,
-        years: req.body.years
-    })
-    try {
-        const dataSave = await movies.save();
-        res.status(201).json(dataSave)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-
-    }
-})
-
-router.get('/movielist', async (req, res) => {
-    try {
-        const movieList = await Movie.find();
-        res.json(movieList)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
 
 router.post('/user', async (req, res) => {
     const { email, password } = req.body;
@@ -55,7 +30,7 @@ router.get('/userlist', async (req, res) => {
 router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
+    if (!user) {    
         return res.status(404).json({ message: 'User Not Found' });
     }
     const isMatch = await bcrypt.compare(password, user.password);
