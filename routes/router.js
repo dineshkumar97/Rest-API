@@ -1,31 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../modal/user');
-const generationToken = require('../modal/utils/index');
+const User = require('../src/models/userEmail');
+const generationToken = require('../src/tokengeneration/generationToken');
 const bcrypt = require('bcryptjs');
-const verifyToken = require('../middleware');
-
-router.post('/user', async (req, res) => {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-    if (!user) {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ email, password: hashedPassword });
-        await newUser.save();
-        return res.status(201).json({ message: 'User Created' });
-    }
-    res.status(404).json({ message: 'User Already Exists' });
-});
-
-router.get('/userlist', async (req, res) => {
-    try {
-        const movieList = await User.find();
-        res.json(movieList)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-})
 
 router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body;

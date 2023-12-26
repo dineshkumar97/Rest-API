@@ -1,16 +1,14 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const routes=require('./routes/router');
 const cors= require('cors');
-
+const userEmailRoutes = require('./src/router/userEmailRoutes');
 const mongooseString = process.env.DATABASE_URL;
 const app = express();
 app.use(cors());
 
 app.use(express.json());
-app.use('/api',routes);
-
+app.use('/api', userEmailRoutes);
 // const userName = 'dineshkumar97';
 // const password = 'Dinesh%406165';
 // const cluster = '@cluster0.qi4ot';

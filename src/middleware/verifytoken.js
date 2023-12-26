@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../modal/user');
+const UserEmail = require('../models/userEmail');
 
 const verifyToken = (req, res, next) => {
     const authHeader = req.headers.authorization;
@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
         if (err) {
             return res.status(403).json({ message: 'Invalid Token' })
         }
-        const user = await User.findOne({ _id: decode.id });
+        const user = await UserEmail.findOne({ _id: decode.id });
         if (!user) {
             res.status(404).json({ message: 'User Not Found' });
         }
