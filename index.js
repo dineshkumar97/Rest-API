@@ -3,12 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors= require('cors');
 const userEmailRoutes = require('./src/router/userEmailRoutes');
+const enquiryRouter = require('./src/router/enquiryRouter');
 const mongooseString = process.env.DATABASE_URL;
 const app = express();
 app.use(cors());
 
 app.use(express.json());
 app.use('/api', userEmailRoutes);
+app.use('/api', enquiryRouter);
 // const userName = 'dineshkumar97';
 // const password = 'Dinesh%406165';
 // const cluster = '@cluster0.qi4ot';
