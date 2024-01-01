@@ -65,7 +65,11 @@ exports.authenticate = async (req, res) => {
         return res.status(400).json({ message: 'InCorrect Password' });
     }
     const token = generationToken(user);
-    res.json({ token })
+    const message={
+        token:token,
+        message:'Login Successfully...'
+    }
+    res.json(message)
 };
 
 

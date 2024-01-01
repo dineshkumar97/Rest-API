@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
-const EnquirySchema = new mongoose.Schema({
+const MemberSchema = new mongoose.Schema({
     username: String,
     mobileno: String,
     age: String,
     emailId: String,
     address: String,
+    gender:Number,
     status: String,
     createdDate: Date,
     createdBy: String,
@@ -13,6 +14,6 @@ const EnquirySchema = new mongoose.Schema({
     isDelete: Number,
     isActive: Number
 });
-const Enquiry = mongoose.model('Enquiry', EnquirySchema);
-module.exports = Enquiry;
 
+const Member = mongoose.model('Member', MemberSchema);
+module.exports = Member;

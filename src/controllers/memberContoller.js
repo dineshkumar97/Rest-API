@@ -1,15 +1,18 @@
-const Enquiry = require('../models/enquiryDetails');
+const Member = require('../models/memberDetails');
+// const Enquiry = require('../services/enqiryServices');
 
-exports.createEnquiry = async (req, res) => {
-    const { username, mobileno, age, emailId, address } = req.body;
-    const mobile = await Enquiry.findOne({ mobileno });
+exports.createMember = async (req, res) => {
+    const { username, mobileno, age, emailId, address, gender } = req.body;
+    const mobile = await Member.findOne({ mobileno });
     if (!mobile) {
-        const newUser = new Enquiry({
+        // let EnquiryDetails = await Enquiry.getMobileNo(mobileno);
+        const member = new Member({
             username: username,
             mobileno: mobileno,
             age: age,
             emailId: emailId,
             address: address,
+            gender: gender,
             status: 'Pending',
             createdDate: new Date(),
             createdBy: null,
@@ -18,15 +21,15 @@ exports.createEnquiry = async (req, res) => {
             isDelete: 0,
             isActive: 1
         });
-        await newUser.save();
+        await member.save();
         let SuccessMessage = {
-            message: 'Enquiry Created Successfully...',
+            message: 'Member Created Successfully...',
             statusCode: 200
         }
         return res.status(201).json(SuccessMessage);
     }
     let errorMessage = {
-        message: 'Enquiry Already Registered',
+        message: 'Member Already Registered',
         statusCode: 400
     }
     res.status(400).json(errorMessage);
@@ -34,9 +37,9 @@ exports.createEnquiry = async (req, res) => {
 
 
 
-exports.getAllEnquiry = async (req, res) => {
+exports.getAllMember = async (req, res) => {
     try {
-        const userDetails = await Enquiry.find();
+        const userDetails = await Member.find();
         let json = {
             message: userDetails,
             statusCode: 200
@@ -46,17 +49,27 @@ exports.getAllEnquiry = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
-exports.updateEnquiryList = async (req, res) => {
+exports.getParticularMember = async (req, res) => {
     try {
-        const { username, mobileno, age, emailId, address, createdDate, active, status } = req.body;
-        const updateEnquiry = await Enquiry.findByIdAndUpdate(req.params.idUser, {
+        await Member.findById(req.params.idUser).then(x => {
+            res.status(200).json({ message: x });
+        })
+
+    } catch (err) {
+        res.status(401).json({ error: err.message });
+    }
+};
+exports.updateMemberList = async (req, res) => {
+    try {
+        const { username, mobileno, age, emailId, address, createdDate, status, gender } = req.body;
+        const updateEnquiry = await Member.findByIdAndUpdate(req.params.idUser, {
             username: username,
             mobileno: mobileno,
             age: age,
             emailId: emailId,
             address: address,
             status: status,
+            gender: gender,
             createdDate: createdDate,
             createdBy: null,
             modifiedBy: null,
@@ -64,10 +77,10 @@ exports.updateEnquiryList = async (req, res) => {
             isDelete: 0,
             isActive: 1
         });
-
+        console.log('ddd',)
         await updateEnquiry.save();
         let SuccessMessage = {
-            message: 'Enquiry Updated Successfully...',
+            message: 'Member Updated Successfully...',
             statusCode: 200
         }
         return res.status(201).json(SuccessMessage);
@@ -76,11 +89,11 @@ exports.updateEnquiryList = async (req, res) => {
     }
 };
 
-exports.deleteParticularEnquiry = async (req, res) => {
+exports.deleteParticularMember = async (req, res) => {
     try {
-        await Enquiry.findOneAndDelete({ _id: req.params.idUser }).then(x => {
+        await Member.findOneAndDelete({ _id: req.params.idUser }).then(x => {
             let SuccessMessage = {
-                message: 'Enquiry Deleted Successfully...',
+                message: 'Member Deleted Successfully...',
                 statusCode: 200
             }
             res.status(200).json(SuccessMessage);
