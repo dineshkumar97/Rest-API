@@ -1,41 +1,68 @@
 const Member = require('../models/memberDetails');
-// const Enquiry = require('../services/enqiryServices');
+const Enquiry = require('../services/enqiryServices');
+const EnquiryDetails = require('../models/enquiryDetails');
 
-exports.createMember = async (req, res) => {
-    const { username, mobileno, age, emailId, address, gender } = req.body;
+exports.createMember = async (req, response) => {
+    const {  mobileno} = req.body;
     const mobile = await Member.findOne({ mobileno });
     if (!mobile) {
-        // let EnquiryDetails = await Enquiry.getMobileNo(mobileno);
-        const member = new Member({
-            username: username,
-            mobileno: mobileno,
-            age: age,
-            emailId: emailId,
-            address: address,
-            gender: gender,
-            status: 'Pending',
-            createdDate: new Date(),
-            createdBy: null,
-            modifiedBy: null,
-            modifiedDate: null,
-            isDelete: 0,
-            isActive: 1
-        });
-        await member.save();
-        let SuccessMessage = {
-            message: 'Member Created Successfully...',
-            statusCode: 200
+        let EnquiryDetails = await Enquiry.getMobileNo(mobileno);
+        createMember(req.body, response, EnquiryDetails, mobile);
+    }
+    else {
+        let errorMessage = {
+            message: 'Member Already Registered',
+            statusCode: 400
         }
-        return res.status(201).json(SuccessMessage);
+        response.status(400).json(errorMessage);
     }
-    let errorMessage = {
-        message: 'Member Already Registered',
-        statusCode: 400
-    }
-    res.status(400).json(errorMessage);
 };
 
+createMember = async (json, response, EnquiryDetails, mobile) => {
+    const member = new Member({
+        username: json.username,
+        mobileno: json.mobileno,
+        age: json.age,
+        emailId: json.emailId,
+        address: json.address,
+        gender: json.gender,
+        status: 'Pending',
+        createdDate: new Date(),
+        createdBy: null,
+        modifiedBy: null,
+        modifiedDate: null,
+        isDelete: 0,
+        isActive: 1
+    });
+    await member.save();
+    if (EnquiryDetails) {
+        updateEnquiryOnce(EnquiryDetails)
+    }
+    let SuccessMessage = {
+        message: 'Member Created Successfully...',
+        statusCode: 200
+    }
+    return response.status(201).json(SuccessMessage);
+}
 
+
+updateEnquiryOnce = async (EnquiryDetail) => {
+    const updateEnquiry = await EnquiryDetails.findByIdAndUpdate(EnquiryDetail._id, {
+        username: EnquiryDetail.username,
+        mobileno: EnquiryDetail.mobileno,
+        age: EnquiryDetail.age,
+        emailId: EnquiryDetail.emailId,
+        address: EnquiryDetail.address,
+        status: 'Registered',
+        createdDate: EnquiryDetail.createdDate,
+        createdBy: EnquiryDetail.createdBy,
+        modifiedBy: EnquiryDetail.modifiedBy,
+        modifiedDate: EnquiryDetail.modifiedDate,
+        isDelete: EnquiryDetail.isDelete,
+        isActive: EnquiryDetail.isActive
+    });
+    await updateEnquiry.save();
+}
 
 exports.getAllMember = async (req, res) => {
     try {
@@ -77,7 +104,6 @@ exports.updateMemberList = async (req, res) => {
             isDelete: 0,
             isActive: 1
         });
-        console.log('ddd',)
         await updateEnquiry.save();
         let SuccessMessage = {
             message: 'Member Updated Successfully...',
@@ -88,7 +114,6 @@ exports.updateMemberList = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 exports.deleteParticularMember = async (req, res) => {
     try {
         await Member.findOneAndDelete({ _id: req.params.idUser }).then(x => {
