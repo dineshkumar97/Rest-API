@@ -5,6 +5,8 @@ const cors= require('cors');
 const userEmailRoutes = require('./src/router/userEmailRouter');
 const enquiryRouter = require('./src/router/enquiryRouter');
 const memberRouter = require('./src/router/memberRouter');
+const sequenceRouter = require('./src/router/sequenceRouter');
+const trainerRouter = require('./src/router/trainerRouter');
 const mongooseString = process.env.DATABASE_URL;
 const app = express();
 app.use(cors());
@@ -12,7 +14,9 @@ app.use(cors());
 app.use(express.json());
 app.use('/api', userEmailRoutes);
 app.use('/api', enquiryRouter);
+app.use('/api', sequenceRouter);
 app.use('/api', memberRouter);
+app.use('/api', trainerRouter);
 // const userName = 'dineshkumar97';
 // const password = 'Dinesh%406165';
 // const cluster = '@cluster0.qi4ot';
@@ -33,5 +37,5 @@ mongoose.connect(mongooseString, {
 
 
 app.listen(3000, () => {
-    console.log('Server started 3001')
+    console.log('Server started 3000')
 })

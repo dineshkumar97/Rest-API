@@ -15,9 +15,9 @@ exports.create_UUID = async () => {
     return uuid;
 }
 
-exports.createTrainerID =  (n) => {
+exports.createTrainerCount =  (n) => {
     let num = n;
     num++; // adds 1 to num
-    console.log('xx',num);
+    console.log('xadddx',num);
     return num;
 }

@@ -1,5 +1,5 @@
 const Member = require('../models/memberDetails');
-const Enquiry = require('../services/enqiryServices');
+const Enquiry = require('../services/commonServices');
 const EnquiryDetails = require('../models/enquiryDetails');
 
 exports.createMember = async (req, response) => {
