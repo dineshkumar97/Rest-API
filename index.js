@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors= require('cors');
-const userEmailRoutes = require('./src/router/userEmailRoutes');
+const userEmailRoutes = require('./src/router/userEmailRouter');
 const enquiryRouter = require('./src/router/enquiryRouter');
 const memberRouter = require('./src/router/memberRouter');
 const mongooseString = process.env.DATABASE_URL;
@@ -32,6 +32,6 @@ mongoose.connect(mongooseString, {
 
 
 
-app.listen(3001, () => {
+app.listen(3000, () => {
     console.log('Server started 3001')
 })

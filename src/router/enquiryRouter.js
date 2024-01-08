@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const enquiryContoller = require('../controllers/enquiryContoller');
+const enquiryContoller = require('../controllers/enquiryController');
 const verifyToken = require('../middleware/verifytoken');
 
 router.post('/enquiry/create', enquiryContoller.createEnquiry);

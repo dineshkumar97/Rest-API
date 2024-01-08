@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const memberContoller = require('../controllers/memberContoller');
+const memberContoller = require('../controllers/memberController');
 const verifyToken = require('../middleware/verifytoken');
 
 router.post('/member/create', memberContoller.createMember);
