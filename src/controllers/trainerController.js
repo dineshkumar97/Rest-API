@@ -5,7 +5,7 @@ const commonServices = require('../services/commonServices');
 exports.createTrainer = async (req, res) => {
     const trainerID = await Sequence.findOne();
     let count = commonServices.createTrainerCount(trainerID.TrainerID)
-    const { firstName, lastName, emailId, address, mobileNo, gender } = req.body;
+    const { firstName, lastName, emailId, address, mobileNo, gender,price,quantity } = req.body;
     const mobile = await TrainerDetails.findOne({ mobileNo });
     if (!mobile) {
         updateSequenceCount(trainerID, count)
@@ -22,7 +22,9 @@ exports.createTrainer = async (req, res) => {
             modifiedBy: null,
             modifiedDate: null,
             isDelete: 0,
-            isActive: 1
+            isActive: 1,
+            price:price,
+            quantity:quantity
         });
         await newUser.save();
         let SuccessMessage = {
@@ -70,9 +72,34 @@ exports.updateTrainer = async (req, res) => {
 
 exports.getAllTrainer = async (req, res) => {
     try {
-        const trainerDetails = await TrainerDetails.find();
+        const trainerDetail = await TrainerDetails.aggregate([
+            {
+              $project: {
+                trainerUID: 1,
+                firstName: 1,
+                lastName: 1,
+                emailId: 1,
+                address: 1,
+                mobileNo: 1,
+                gender: 1,
+                createdDate: 1,
+                createdBy: null,
+                modifiedBy: null,
+                modifiedDate: 1,
+                isDelete: 1,
+                isActive: 1,
+                price:1,
+                quantity:1,
+                fullName: {$concat: ['$firstName', ' ', '$lastName']},
+                totalAdd: { $add: ["$price", "$quantity"] },
+                totalsubtract: { $subtract: ["$price", "$quantity"] },
+                totalDiv: { $divide: ["$price", "$quantity"] },
+                totalMulipt: { $multiply: ["$price", "$quantity"] }
+              },
+            }
+          ]);
         let json = {
-            message: trainerDetails,
+            message: trainerDetail,
             statusCode: 200
         }
         res.status(200).json(json);

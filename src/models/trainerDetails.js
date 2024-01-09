@@ -12,7 +12,10 @@ const TrainerSchema = new mongoose.Schema({
     modifiedBy: String,
     modifiedDate: Date,
     isDelete: Number,
-    isActive: Number
+    isActive: Number,
+    price:Number,
+    quantity:Number,
+    
 });
 
 const Trainer = mongoose.model('Trainer', TrainerSchema);
