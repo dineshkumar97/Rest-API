@@ -68,7 +68,47 @@ exports.updateTrainer = async (req, res) => {
     }
 };
 
+exports.getAllTrainer = async (req, res) => {
+    try {
+        const trainerDetails = await TrainerDetails.find();
+        let json = {
+            message: trainerDetails,
+            statusCode: 200
+        }
+        res.status(200).json(json);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
 
+exports.getParticularTrainer = async (req, res) => {
+    try {
+        await TrainerDetails.findById(req.params.idUser).then(x => {
+            res.status(200).json({ message: x });
+        })
+
+    } catch (err) {
+        res.status(401).json({ error: err.message });
+    }
+};
+
+exports.deleteParticularTrainer = async (req, res) => {
+    try {
+        await TrainerDetails.findOneAndDelete({ _id: req.params.idUser }).then(x => {
+            let SuccessMessage = {
+                message: 'Trainer Deleted Successfully...',
+                statusCode: 200
+            }
+            res.status(200).json(SuccessMessage);
+        })
+    } catch (err) {
+        let errorMessage = {
+            message: err.message,
+            statusCode: 400
+        }
+        res.status(400).json(errorMessage);
+    }
+};
 
 // Update Only Sequence Count
 updateSequenceCount = async (SequenceDetails, count) => {
