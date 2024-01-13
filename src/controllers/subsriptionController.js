@@ -1,16 +1,21 @@
 const Subcription = require('../models/subscriptionDetails');
 
 exports.createSubscription = async (req, res) => {
-    const { memberID, planID, startDate, endDate,memberName,planName } = req.body;
-    const mobile = await Subcription.findOne({ memberID });
-    if (!mobile) {
+    const {  startDate, endDate,member ,plan} = req.body;
+    let memberId=member;
+    const memberID = await Subcription.findOne( { 'member.id': memberId.id});
+    if (!memberID) {
         const newUser = new Subcription({
-            memberID: memberID,
-            planID: planID,
+            member: {
+                id: member.id,
+                text: member.text,
+            },
+            plan: {
+                id: plan.id,
+                text: plan.text,
+            },
             startDate: startDate,
             endDate: endDate,
-            planName:planName,
-            memberName:memberName,
             createdDate: new Date(),
             createdBy: null,
             modifiedBy: null,

@@ -1,9 +1,13 @@
 const mongoose = require('mongoose');
 const SubscriptionSchema = new mongoose.Schema({
-    memberID: String,
-    memberName: String,
-    planID: String,
-    planName: String,
+    member: {
+        id: String,
+        text: String,
+    },
+    plan: {
+        id: String,
+        text: String,
+    },
     startDate: Date,
     endDate: Date,
     createdDate: Date,
