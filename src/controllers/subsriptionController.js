@@ -63,14 +63,18 @@ exports.getParticularMembership = async (req, res) => {
 };
 exports.updateMemberListship = async (req, res) => {
     try {
-        const { memberID, planID, startDate, endDate,memberName,planName } = req.body;
+        const {  startDate, endDate,member ,plan } = req.body;
         const updateEnquiry = await Subcription.findByIdAndUpdate(req.params.idUser, {
-            memberID: memberID,
-            planID: planID,
+            member: {
+                id: member.id,
+                text: member.text,
+            },
+            plan: {
+                id: plan.id,
+                text: plan.text,
+            },
             startDate: startDate,
             endDate: endDate,
-            planName:planName,
-            memberName:memberName,
             createdDate: createdDate,
             createdBy: null,
             modifiedBy: null,
