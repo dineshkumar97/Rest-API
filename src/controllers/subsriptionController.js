@@ -1,14 +1,16 @@
-const Plan = require('../models/planDetails');
+const Subcription = require('../models/subscriptionDetails');
 
-exports.createPlan = async (req, res) => {
-    const { name, description, noOfDays, price } = req.body;
-    const mobile = await Plan.findOne({ description });
+exports.createSubscription = async (req, res) => {
+    const { memberID, planID, startDate, endDate,memberName,planName } = req.body;
+    const mobile = await Subcription.findOne({ memberID });
     if (!mobile) {
-        const newUser = new Plan({
-            name: name,
-            description: description,
-            noOfDays: noOfDays,
-            price: price,
+        const newUser = new Subcription({
+            memberID: memberID,
+            planID: planID,
+            startDate: startDate,
+            endDate: endDate,
+            planName:planName,
+            memberName:memberName,
             createdDate: new Date(),
             createdBy: null,
             modifiedBy: null,
@@ -18,13 +20,13 @@ exports.createPlan = async (req, res) => {
         });
         await newUser.save();
         let SuccessMessage = {
-            message: 'Plan Created Successfully...',
+            message: 'Subcription Created Successfully...',
             statusCode: 200
         }
         return res.status(201).json(SuccessMessage);
     }
     let errorMessage = {
-        message: 'Plan Already Registered',
+        message: 'Subcription Already Registered',
         statusCode: 400
     }
     res.status(400).json(errorMessage);
@@ -32,9 +34,9 @@ exports.createPlan = async (req, res) => {
 
 
 
-exports.getAllPlan = async (req, res) => {
+exports.getAllMembership = async (req, res) => {
     try {
-        const userDetails = await Plan.find();
+        const userDetails = await Subcription.find();
         let json = {
             message: userDetails,
             statusCode: 200
@@ -44,9 +46,9 @@ exports.getAllPlan = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-exports.getParticularPlan = async (req, res) => {
+exports.getParticularMembership = async (req, res) => {
     try {
-        await Plan.findById(req.params.idUser).then(x => {
+        await Subcription.findById(req.params.idUser).then(x => {
             res.status(200).json({ message: x });
         })
 
@@ -54,14 +56,16 @@ exports.getParticularPlan = async (req, res) => {
         res.status(401).json({ error: err.message });
     }
 };
-exports.updatePlanList = async (req, res) => {
+exports.updateMemberListship = async (req, res) => {
     try {
-        const { name, description, noOfDays, price ,createdDate} = req.body;
-        const updateEnquiry = await Plan.findByIdAndUpdate(req.params.idUser, {
-            name: name,
-            description: description,
-            noOfDays: noOfDays,
-            price: price,
+        const { memberID, planID, startDate, endDate,memberName,planName } = req.body;
+        const updateEnquiry = await Subcription.findByIdAndUpdate(req.params.idUser, {
+            memberID: memberID,
+            planID: planID,
+            startDate: startDate,
+            endDate: endDate,
+            planName:planName,
+            memberName:memberName,
             createdDate: createdDate,
             createdBy: null,
             modifiedBy: null,
@@ -72,7 +76,7 @@ exports.updatePlanList = async (req, res) => {
 
         await updateEnquiry.save();
         let SuccessMessage = {
-            message: 'Plan Updated Successfully...',
+            message: 'Subcription Updated Successfully...',
             statusCode: 200
         }
         return res.status(201).json(SuccessMessage);
@@ -81,11 +85,11 @@ exports.updatePlanList = async (req, res) => {
     }
 };
 
-exports.deleteParticularPlan = async (req, res) => {
+exports.deleteParticularMembership = async (req, res) => {
     try {
-        await Plan.findOneAndDelete({ _id: req.params.idUser }).then(x => {
+        await Subcription.findOneAndDelete({ _id: req.params.idUser }).then(x => {
             let SuccessMessage = {
-                message: 'Plan Deleted Successfully...',
+                message: 'Subcription Deleted Successfully...',
                 statusCode: 200
             }
             res.status(200).json(SuccessMessage);

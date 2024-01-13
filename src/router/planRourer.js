@@ -5,6 +5,7 @@ const verifyToken = require('../middleware/verifytoken');
 
 router.post('/plan/create', planContoller.createPlan);
 router.get('/plan/getAllPlan', planContoller.getAllPlan);
+router.get('/plan/:idUser', planContoller.getParticularPlan);
 router.put('/plan/update/:idUser', planContoller.updatePlanList);
 router.delete('/plan/delete/:idUser', planContoller.deleteParticularPlan);
 
