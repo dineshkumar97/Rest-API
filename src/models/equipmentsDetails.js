@@ -17,7 +17,7 @@ const EquipmentSchema = new mongoose.Schema({
     isDelete: Number,
     isActive: Number
 });
-const Enquiry = mongoose.model('Equipment', EquipmentSchema);
-module.exports = Enquiry;
+const Equipment = mongoose.model('Equipment', EquipmentSchema);
+module.exports = Equipment;
 
 	
