@@ -15,6 +15,7 @@ const trainerRouter = require('./src/router/trainerRouter');
 const equipmentRouter = require('./src/router/equipmentRouter');
 const planRouter = require('./src/router/planRourer');
 const subcriptionRouter = require('./src/router/subcriptionRouter');
+const sideMenuRouter = require('./src/router/sideMenuRouter');
 
 app.use('/api', userEmailRoutes);
 app.use('/api', enquiryRouter);
@@ -24,6 +25,7 @@ app.use('/api', trainerRouter);
 app.use('/api', equipmentRouter);
 app.use('/api', planRouter);
 app.use('/api', subcriptionRouter);
+app.use('/api', sideMenuRouter);
 // const userName = 'dineshkumar97';
 // const password = 'Dinesh%406165';
 // const cluster = '@cluster0.qi4ot';

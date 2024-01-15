@@ -1,9 +1,9 @@
 const Subcription = require('../models/subscriptionDetails');
 
 exports.createSubscription = async (req, res) => {
-    const {  startDate, endDate,member ,plan} = req.body;
-    let memberId=member;
-    const memberID = await Subcription.findOne( { 'member.id': memberId.id});
+    const { startDate, endDate, member, plan } = req.body;
+    let memberId = member;
+    const memberID = await Subcription.findOne({ 'member.id': memberId.id });
     if (!memberID) {
         const newUser = new Subcription({
             member: {
@@ -63,7 +63,7 @@ exports.getParticularMembership = async (req, res) => {
 };
 exports.updateMemberListship = async (req, res) => {
     try {
-        const {  startDate, endDate,member ,plan, createdDate} = req.body;
+        const { startDate, endDate, member, plan, createdDate } = req.body;
         const updateEnquiry = await Subcription.findByIdAndUpdate(req.params.idUser, {
             member: {
                 id: member.id,
