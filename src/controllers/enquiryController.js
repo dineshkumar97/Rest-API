@@ -1,7 +1,7 @@
 const Enquiry = require('../models/enquiryDetails');
 
 exports.createEnquiry = async (req, res) => {
-    const { username, mobileno, age, emailId, address } = req.body;
+    const { username, mobileno, age, emailId, address, description } = req.body;
     const mobile = await Enquiry.findOne({ mobileno });
     if (!mobile) {
         const newUser = new Enquiry({
@@ -10,6 +10,7 @@ exports.createEnquiry = async (req, res) => {
             age: age,
             emailId: emailId,
             address: address,
+            description: description,
             status: 'Pending',
             createdDate: new Date(),
             createdBy: null,
@@ -49,28 +50,41 @@ exports.getAllEnquiry = async (req, res) => {
 
 exports.updateEnquiryList = async (req, res) => {
     try {
-        const { username, mobileno, age, emailId, address, createdDate, active, status } = req.body;
-        const updateEnquiry = await Enquiry.findByIdAndUpdate(req.params.idUser, {
-            username: username,
-            mobileno: mobileno,
-            age: age,
-            emailId: emailId,
-            address: address,
-            status: status,
-            createdDate: createdDate,
-            createdBy: null,
-            modifiedBy: null,
-            modifiedDate: new Date(),
-            isDelete: 0,
-            isActive: 1
-        });
-
-        await updateEnquiry.save();
-        let SuccessMessage = {
-            message: 'Enquiry Updated Successfully...',
-            statusCode: 200
+        const { username, mobileno, age, emailId, address, createdDate, status, description } = req.body;
+        const enquireUnqiueID = await Enquiry.find({ mobileno: req.body.mobileno });
+        const mobileCheck = enquireUnqiueID[0]?.mobileno;
+        const userID = enquireUnqiueID[0]?._id.toString();
+        if (mobileCheck === req.body.mobileno && userID !== req.params.idUser) {
+            let errorMessage = {
+                message: 'Enquiry Already Registered',
+                statusCode: 400
+            }
+            res.status(400).json(errorMessage);
+            return
+        } else {
+            const updateEnquiry = await Enquiry.findByIdAndUpdate(req.params.idUser, {
+                username: username,
+                mobileno: mobileno,
+                age: age,
+                emailId: emailId,
+                address: address,
+                description: description,
+                status: status,
+                createdDate: createdDate,
+                createdBy: null,
+                modifiedBy: null,
+                modifiedDate: new Date(),
+                isDelete: 0,
+                isActive: 1
+            });
+            await updateEnquiry.save();
+            let SuccessMessage = {
+                message: 'Enquiry Updated Successfully...',
+                statusCode: 200
+            }
+            return res.status(201).json(SuccessMessage);
         }
-        return res.status(201).json(SuccessMessage);
+
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

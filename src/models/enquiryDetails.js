@@ -10,6 +10,7 @@ const EnquirySchema = new mongoose.Schema({
     createdBy: String,
     modifiedBy: String,
     modifiedDate: Date,
+    description:String,
     isDelete: Number,
     isActive: Number
 });
