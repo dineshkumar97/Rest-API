@@ -16,7 +16,7 @@ exports.createTrainer = async (req, res) => {
             address: address,
             mobileNo: mobileNo,
             gender: gender,
-            trainerUID: `${'TID-'}${count}`,
+            trainerUID: `${trainerID.prefix}${count}`,
             createdDate: new Date(),
             createdBy: null,
             modifiedBy: null,
@@ -146,7 +146,9 @@ updateSequenceCount = async (SequenceDetails, count) => {
         modifiedBy: null,
         modifiedDate: new Date(),
         isDelete: 0,
-        isActive: 1
+        isActive: 1,
+        prefix:'TID ',
+        suffix:null,
     });
     await upateSequence.save();
 }

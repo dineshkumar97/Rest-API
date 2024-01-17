@@ -1,13 +1,19 @@
 const Member = require('../models/memberDetails');
-const Enquiry = require('../services/commonServices');
 const EnquiryDetails = require('../models/enquiryDetails');
+const MemberSequence = require('../models/memberSequenceDetails');
+const commonServices = require('../services/commonServices');
 
 exports.createMember = async (req, response) => {
+    const memberID = await MemberSequence.findOne();
+    console.log('mem',memberID)
+    let count = commonServices.createTrainerCount(memberID.MemberID)
+
     const {  mobileno} = req.body;
     const mobile = await Member.findOne({ mobileno });
     if (!mobile) {
-        let EnquiryDetails = await Enquiry.getMobileNo(mobileno);
-        createMember(req.body, response, EnquiryDetails, mobile);
+        let EnquiryDetails = await commonServices.getMobileNo(mobileno);
+        updateMemberSequenceCount(memberID, count)
+        createMember(req.body, response, EnquiryDetails, memberID,count);
     }
     else {
         let errorMessage = {
@@ -18,7 +24,23 @@ exports.createMember = async (req, response) => {
     }
 };
 
-createMember = async (json, response, EnquiryDetails, mobile) => {
+// Update Only Sequence Count
+updateMemberSequenceCount = async (SequenceDetails, count) => {
+    const upateSequence = await MemberSequence.findByIdAndUpdate(SequenceDetails._id, {
+        MemberID: count,
+        createdDate: SequenceDetails.createdDate,
+        createdBy: null,
+        modifiedBy: null,
+        modifiedDate: new Date(),
+        isDelete: 0,
+        isActive: 1,
+        prefix:'GYM ',
+        suffix:null,
+    });
+    await upateSequence.save();
+}
+
+createMember = async (json, response, EnquiryDetails, memberID,count) => {
     const member = new Member({
         username: json.username,
         mobileno: json.mobileno,
@@ -26,6 +48,7 @@ createMember = async (json, response, EnquiryDetails, mobile) => {
         emailId: json.emailId,
         address: json.address,
         gender: json.gender,
+        memberId:`${memberID.prefix}${count}`,
         status: 'Pending',
         createdDate: new Date(),
         createdBy: null,

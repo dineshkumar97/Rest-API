@@ -1,22 +1,22 @@
-const SequenceDetails = require('../models/sequenceDetails');
+const MemberSequenceDetails = require('../models/memberSequenceDetails');
 
-exports.createSequence = async (req, response) => {
+exports.createMemberSequence = async (req, response) => {
     try {
-    const { TrainerID } = req.body;
-        const member = new SequenceDetails({
-            TrainerID: TrainerID,
+    const { MemberID } = req.body;
+        const member = new MemberSequenceDetails({
+            MemberID: MemberID,
             createdDate: new Date(),
             createdBy: null,
             modifiedBy: null,
             modifiedDate: null,
             isDelete: 0,
             isActive: 1,
-            prefix: "TID ",
+            prefix: "GYM ",
             suffix: null
         });
         await member.save();
         let json = {
-            message: 'Sequence Created Successfully...',
+            message: 'Member Sequence Created Successfully...',
             statusCode: 200
         }
         response.status(200).json(json);

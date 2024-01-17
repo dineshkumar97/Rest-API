@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const SequenceSchema = new mongoose.Schema({
-    TrainerID: Number,
+const MemberSequenceSchema = new mongoose.Schema({
+    MemberID: Number,
     createdBy: String,
     modifiedBy: String,
     modifiedDate: Date,
@@ -11,5 +11,5 @@ const SequenceSchema = new mongoose.Schema({
     createdDate: Date
 });
 
-const SequenceDetails = mongoose.model('Sequence', SequenceSchema);
-module.exports = SequenceDetails;
+const MemberSequence = mongoose.model('MemberSequence', MemberSequenceSchema);
+module.exports = MemberSequence;
