@@ -24,6 +24,7 @@ const planRouter = require('./src/router/planRourer');
 const subcriptionRouter = require('./src/router/subcriptionRouter');
 const sideMenuRouter = require('./src/router/sideMenuRouter');
 const memberSequenceRouter = require('./src/router/memberSequenceRouter');
+const memberAttendanceRouter = require('./src/router/memberAttendanceRouter');
 
 app.use('/api', userEmailRoutes);
 app.use('/api', enquiryRouter);
@@ -35,6 +36,7 @@ app.use('/api', planRouter);
 app.use('/api', subcriptionRouter);
 app.use('/api', sideMenuRouter);
 app.use('/api', memberSequenceRouter);
+app.use('/api', memberAttendanceRouter);
 
 
 mongoose.connect(mongooseString, {

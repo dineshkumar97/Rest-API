@@ -109,6 +109,9 @@ exports.getParticularMember = async (req, res) => {
         res.status(401).json({ error: err.message });
     }
 };
+
+
+
 exports.updateMemberList = async (req, res) => {
     try {
         const { username, mobileno, age, emailId, address, createdDate, status, gender } = req.body;
